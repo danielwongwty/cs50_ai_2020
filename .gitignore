@@ -33,4 +33,6 @@ _ReSharper*/
 packages/
 
 # Ignore Python runtime file
+__pycache__/
 *.pyc
+*.pyo
