@@ -36,3 +36,6 @@ packages/
 __pycache__/
 *.pyc
 *.pyo
+
+# Ignore Visual Studio Code file
+.vscode/
