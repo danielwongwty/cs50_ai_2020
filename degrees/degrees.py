@@ -92,8 +92,43 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
 
-    # TODO
-    raise NotImplementedError
+    init = Node(source, None, None)
+    """ Set initial state """
+
+    frontier = QueueFrontier()
+    """ Use BFS for finding shortest path """
+
+    frontier.add(init)
+    while True:
+
+        if frontier.empty():
+            """ No solution if no node is left """
+            return None
+
+        node = frontier.remove()
+        neigbor_nodes = [Node(pid, node, mid) 
+            for mid, pid in neighbors_for_person(node.state)]
+
+        for n in neigbor_nodes:
+
+            if n.state == target:
+                """ goal is found """
+                return get_path(n)
+
+            if not frontier.contains_state(n):
+                """ add to frontier if this node is not yet explored """
+                frontier.add(n)
+
+
+def get_path(node):
+    """
+    Given a `node` connected with other nodes sequentially by its .parent 
+    attribute, return a list of (node.action, node.state) pairs from its most 
+    ancester to itself.
+    """
+    if node.parent is None:
+        return []
+    return get_path(node.parent) + [(node.action, node.state)]
 
 
 def person_id_for_name(name):
