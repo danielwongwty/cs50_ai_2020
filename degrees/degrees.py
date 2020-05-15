@@ -98,7 +98,10 @@ def shortest_path(source, target):
     frontier = QueueFrontier()
     """ Use BFS for finding shortest path """
 
+    explored = QueueFrontier()
+
     frontier.add(init)
+    explored.add(init)
     while True:
 
         if frontier.empty():
@@ -115,9 +118,10 @@ def shortest_path(source, target):
                 """ goal is found """
                 return get_path(n)
 
-            if not frontier.contains_state(n):
+            if not explored.contains_state(n.state):
                 """ add to frontier if this node is not yet explored """
                 frontier.add(n)
+                explored.add(n)
 
 
 def get_path(node):
