@@ -59,7 +59,34 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
-    raise NotImplementedError
+    MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "June", 
+              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ]
+    evidence = []
+    labels = []
+    with open(filename, newline='') as csvfile:
+        for row in csv.DictReader(csvfile):
+            evidence.append([
+                int(row["Administrative"]), 
+                float(row["Administrative_Duration"]), 
+                int(row["Informational"]),
+                float(row["Informational_Duration"]),
+                int(row["ProductRelated"]),
+                float(row["ProductRelated_Duration"]),
+                float(row["BounceRates"]),
+                float(row["ExitRates"]),
+                float(row["PageValues"]),
+                float(row["SpecialDay"]),
+                MONTHS.index(row["Month"]),
+                int(row["OperatingSystems"]),
+                int(row["Browser"]),
+                int(row["Region"]),
+                int(row["TrafficType"]),
+                int(row["VisitorType"] == "Returning_Visitor"),
+                ["FALSE", "TRUE"].index(row["Weekend"])
+            ])
+            labels.append(["FALSE", "TRUE"].index(row["Revenue"]))
+    return evidence, labels
 
 
 def train_model(evidence, labels):
@@ -67,7 +94,9 @@ def train_model(evidence, labels):
     Given a list of evidence lists and a list of labels, return a
     fitted k-nearest neighbor model (k=1) trained on the data.
     """
-    raise NotImplementedError
+    model = KNeighborsClassifier(n_neighbors=1)
+    model.fit(evidence, labels)
+    return model
 
 
 def evaluate(labels, predictions):
@@ -85,7 +114,14 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
-    raise NotImplementedError
+    label_counts = {0: 0.0, 1: 0.0}
+    correct_counts = {0: 0.0, 1: 0.0}
+    for label, prediction in zip(labels, predictions):
+        label_counts[label] += 1
+        if prediction == label:
+            correct_counts[label] += 1
+    return (correct_counts[1] / label_counts[1], 
+            correct_counts[0] / label_counts[0])
 
 
 if __name__ == "__main__":
