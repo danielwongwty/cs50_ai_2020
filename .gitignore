@@ -42,3 +42,6 @@ __pycache__/
 
 # Ignore Visual Studio Code file
 .vscode/
+
+# Ignore the folder for our dataset
+gtsrb/
