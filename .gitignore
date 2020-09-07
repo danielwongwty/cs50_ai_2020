@@ -45,3 +45,4 @@ __pycache__/
 
 # Ignore the folder for our dataset
 gtsrb/
+gtsrb-small/
